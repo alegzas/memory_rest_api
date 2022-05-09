@@ -48,7 +48,7 @@ func main() {
 
 	router.HandleFunc("/", index).Methods("GET")
 	router.HandleFunc("/getScores", getScores).Methods("GET")
-	router.HandleFunc("/sendScore", sendScore).Methods("POST")
+	router.HandleFunc("/sendScore", sendScore).Methods("POST", "OPTIONS")
 
 	fmt.Println("Running on port 60")
 	log.Fatal(http.ListenAndServe(":60", router))
@@ -90,6 +90,8 @@ func getScores(w http.ResponseWriter, r *http.Request) {
 }
 
 func sendScore(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers","Content-Type")
 	name := r.FormValue("name")
 	score := r.FormValue("score")
 	var date string
